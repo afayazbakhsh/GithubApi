@@ -16,9 +16,38 @@ class GithubController extends Controller
         return $this->request = $request;
     }
 
-        // Get repositories
+        // Get Authenticated User
+    public function getAuthenticatedUser(){
+
+        return $this->request->handle('user','get');
+    }
+
+        // Update Authenticated User
+    public function updateUser(){
+
+        return $this->request->handle('user/','patch');
+    }
+
+        // Get All Users In Github
+    public function users(){
+
+        $param = [
+            'since' => 100,
+            'per_page' => 50,
+        ];
+
+        return $this->request->handle('users','get' , $param);
+    }
+
+        // Get User By Username
+    public function getUser(Request $request){
+
+        return $this->request->handle('users/'.$request->username,'get');
+    }
+
+        // Get Repositories
     public function getRepo(){
 
-       return $this->request->handle('https://api.github.com/user/repos','get');
+       return $this->request->handle('user/repos','get');
     }
 }
