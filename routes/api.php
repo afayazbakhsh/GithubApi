@@ -22,6 +22,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function(){
 
+    // Authenticate User
+    Route::get('get-authenticated-user',[GithubController::class,'getAuthenticatedUser']);
+    Route::get('update-user',[GithubController::class,'updateUser']);
+
+    // Users
+    Route::get('users',[GithubController::class,'users']);
+    // user by username
+    Route::get('users/{username}',[GithubController::class,'getUser']);
+
     Route::get('get-repositories',[GithubController::class,'getRepo']);
 });
 
