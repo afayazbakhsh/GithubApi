@@ -4,50 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\HandleRequests;
 use App\Http\Controllers\Controller;
+use App\Services\GithubRequestsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GithubController extends Controller
 {
-    private $request;
+    public $service;
 
-    public function __construct(HandleRequests $request){
-
-        return $this->request = $request;
+    public function __construct(GithubRequestsService $service)
+    {
+        $this->service = $service;
     }
+    public function is_token_currect(Request $request){
 
-        // Get Authenticated User
-    public function getAuthenticatedUser(){
+        $response =  $this->service->getAuthenticatedUser($request->token);
+        Log::info($response);
 
-        return $this->request->handle('user','get');
-    }
+        if($response->status() == 200){
 
-        // Update Authenticated User
-    public function updateUser(){
+            return true;
+        }
 
-        return $this->request->handle('user/','patch');
-    }
-
-        // Get All Users In Github
-    public function users(){
-
-        $param = [
-            'since' => 100,
-            'per_page' => 50,
-        ];
-
-        return $this->request->handle('users','get' , $param);
-    }
-
-        // Get User By Username
-    public function getUser(Request $request){
-
-        return $this->request->handle('users/'.$request->username,'get');
-    }
-
-        // Get Repositories
-    public function getRepo(){
-
-       return $this->request->handle('user/repos','get');
+        return $response;
     }
 }
