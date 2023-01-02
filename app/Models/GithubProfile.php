@@ -13,6 +13,7 @@ class GithubProfile extends Model
     protected $fillable = [
         'name',
         'username',
+        'token_id',
         'avatar',
         'followers_count',
         'following_count',
