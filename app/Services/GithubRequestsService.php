@@ -4,27 +4,40 @@ namespace App\Services;
 
 use App\Actions\HandleRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class GithubRequestsService
 {
     private $request;
 
-    public function __construct(HandleRequests $request){
+    public function __construct(HandleRequests $request)
+    {
 
         return $this->request = $request;
     }
 
-        // Get Authenticated User
-    public function getAuthenticatedUser($token){
+    // Get Authenticated User
+    public function getAuthenticatedUser($token)
+    {
 
-        return $this->request->handle($token, 'user','get');
+        $response = $this->request->handle($token, 'user', 'get');
+
+        if ($response['message'] ?? null) {
+
+            return response('Token dont have access', 401);
+
+        } else {
+
+            return response($response, 200);
+        }
     }
 
-    //     // Update Authenticated User
-    // public function updateUser($token){
+    // Update Authenticated User
+    public function updateUser($token, $body)
+    {
 
-    //     return $this->request->handle($token,'user/','patch');
-    // }
+        return $this->request->handle($token, 'user/', 'patch', $body);
+    }
 
     //     // Get All Users In Github
     // public function users(){
