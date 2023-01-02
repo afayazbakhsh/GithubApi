@@ -6,6 +6,7 @@ use App\Filament\Resources\GithubProfileResource\Pages;
 use App\Filament\Resources\GithubProfileResource\RelationManagers;
 use App\Models\GithubProfile;
 use Filament\Forms;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -23,7 +24,9 @@ class GithubProfileResource extends Resource
     {
         return $form
             ->schema([
-
+                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('username')->required(),
+                Forms\Components\TextInput::make('email')->required(),
             ]);
     }
 
@@ -31,6 +34,7 @@ class GithubProfileResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('avatar')->square(),
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('username'),
                 Tables\Columns\TextColumn::make('email'),
