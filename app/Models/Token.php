@@ -12,4 +12,9 @@ class Token extends Model
     protected $fillable = [
         'token',
     ];
+
+    public function githubProfile(){
+
+        return $this->hasOne(GithubProfile::class);
+    }
 }

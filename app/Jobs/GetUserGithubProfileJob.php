@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Events\Github\UserProfileCreated;
+use App\Models\GithubProfile;
 use App\Models\Token;
 use App\Services\GithubRequestsService;
 use Illuminate\Bus\Queueable;
@@ -39,8 +41,25 @@ class GetUserGithubProfileJob implements ShouldQueue
         $githubUser = $service->getAuthenticatedUser($this->token->token);
 
         // create github profile data
+        $profile = $this->token->githubProfile()->create([
 
-        Log::info($githubUser);
+            'name'              => $githubUser['name'],
+            'username'          => $githubUser['login'],
+            'avatar'            => $githubUser['avatar_url'],
+            'followers_count'   => $githubUser['followers'],
+            'following_count'   => $githubUser['following'],
+            'bio'               => $githubUser['bio'],
+            'email'             => $githubUser['email'],
+            'public_repos_count'=> $githubUser['public_repos'],
+            'link'              => $githubUser['html_url']
 
+        ]);
+
+        if($githubUser['email']){
+
+            event(new UserProfileCreated($profile));
+        }
+
+        Log::info($profile);
     }
 }
