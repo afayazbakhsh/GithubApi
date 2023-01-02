@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('github_profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('token_id')->constrained();
+            $table->foreignId('token_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('username')->unique();
             $table->string('avatar');
