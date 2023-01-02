@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Events\Github\UserProfileCreated;
 use App\Listeners\Github\SendEmail;
+use App\Models\GithubProfile;
 use App\Models\Token;
+use App\Observers\GithubProfileObserver;
 use App\Observers\TokenObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -36,6 +38,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Token::observe(TokenObserver::class);
+        GithubProfile::observe(GithubProfileObserver::class);
     }
 
     /**
