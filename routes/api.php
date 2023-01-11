@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\GithubController;
+use App\Models\GithubProfile;
+use App\Models\Token;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,17 +23,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+
 Route::prefix('v1')->group(function(){
 
+    // test routes
+    Route::get('tokens',function(){
+        return Token::all();
+    });
+
+    Route::get('profiles',function(){
+
+        return ['profiles' => GithubProfile::with('token')->get()];
+    });
+
     // Authenticate User
-    Route::get('get-authenticated-user',[GithubController::class,'getAuthenticatedUser']);
-    Route::get('update-user',[GithubController::class,'updateUser']);
+    Route::get('get-authenticated-user/{token}',[GithubController::class,'getAuthenticatedUser']);
 
-    // Users
-    Route::get('users',[GithubController::class,'users']);
-    // user by username
-    Route::get('users/{username}',[GithubController::class,'getUser']);
+    Route::get('update-authenticated-user/{token}',[GithubController::class,'updateUser']);
 
-    Route::get('get-repositories',[GithubController::class,'getRepo']);
 });
 

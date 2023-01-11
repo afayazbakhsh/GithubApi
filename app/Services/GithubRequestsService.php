@@ -20,23 +20,14 @@ class GithubRequestsService
     public function getAuthenticatedUser($token)
     {
 
-        $response = $this->request->handle($token, 'user', 'get');
-
-        if ($response['message'] ?? null) {
-
-            return response('Token dont have access', 401);
-
-        } else {
-
-            return response($response, 200);
-        }
+        return $this->request->handle($token, 'user', 'get');
     }
 
     // Update Authenticated User
     public function updateUser($token, $body)
     {
 
-        return $this->request->handle($token, 'user/', 'patch', $body);
+        return $this->request->handle($token, 'user', 'patch', $body);
     }
 
     //     // Get All Users In Github

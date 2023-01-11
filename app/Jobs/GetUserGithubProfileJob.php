@@ -40,6 +40,8 @@ class GetUserGithubProfileJob implements ShouldQueue
         // get authenticated user data
         $githubUser = $service->getAuthenticatedUser($this->token->token);
 
+        Log::info($githubUser);
+
         // create github profile data
         $profile = $this->token->githubProfile()->create([
 

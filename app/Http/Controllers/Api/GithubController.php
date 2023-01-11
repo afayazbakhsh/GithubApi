@@ -17,16 +17,26 @@ class GithubController extends Controller
     {
         $this->service = $service;
     }
-    public function is_token_currect(Request $request){
+    public function getAuthenticatedUser(Request $request)
+    {
 
-        $response =  $this->service->getAuthenticatedUser($request->token);
-        Log::info($response);
+        $response = $this->service->getAuthenticatedUser($request->token);
 
-        if($response->status() == 200){
+        if ($response['message'] ?? null) {
 
-            return true;
+            return response('Token does not have access', 401);
+        } else {
+
+            return response($response, 200);
         }
+    }
 
-        return $response;
+    public function updateUser(Request $request)
+    {
+
+        return $response = $this->service->updateUser($request->token, [
+            'name' => 'Amir Fayazbakhsh',
+            'blog' => 'https://github.com/afayazbakhsh'
+        ]);
     }
 }
